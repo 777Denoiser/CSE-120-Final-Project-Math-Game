@@ -78,6 +78,8 @@ class MathGame(wx.Frame):
         if str(correct_answer) == user_answer:
             self.correct_answers += 1
 
+
+# scores needs fixing, does not display the accurate score
     def show_score(self):
         score = self.correct_answers / len(self.questions) * 10
         self.question_label.SetLabel(f"Your score: {score}/10")
@@ -85,6 +87,8 @@ class MathGame(wx.Frame):
         self.restart_button.Show()
 
 
+
+# here is where it called the frame to run
 if __name__ == "__main__":
     app = wx.App()
     frame = MathGame(None)
