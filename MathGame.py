@@ -74,7 +74,6 @@ class MathGame(wx.Frame):
 
         correct_answer = str(eval(self.questions[self.current_question_index]))
         if str(correct_answer) == user_answer:
-
             self.correct_answers += 1
 
     def show_score(self):
