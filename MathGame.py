@@ -68,14 +68,23 @@ class MathGame(wx.Frame):
 
     def check_answer(self):
         user_answer = self.answer_text_ctrl.GetValue()
+
         correct_answer = eval(self.questions[self.current_question_index])
         if str(correct_answer) == user_answer:  # Compare as floats
+
+        correct_answer = str(eval(self.questions[self.current_question_index]))
+        if str(correct_answer) == user_answer:
+
             self.correct_answers += 1
 
     def show_score(self):
+
         total_questions = len(self.questions)
         score = self.correct_answers / len(self.questions) * 10
         self.question_label.SetLabel(f"Your score: {score}/10%")
+
+        score = self.correct_answers / len(self.questions) * 100
+        self.question_label.SetLabel(f"Your score: {score:.2f}/100")
         self.next_button.Disable()
         self.restart_button.Show()
 
