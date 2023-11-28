@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b77de09f-d229-4455-b703-33732aacd51e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MathGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/MathGame.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,5 +74,59 @@
       <updated>1700273769362</updated>
     </task>
     <servers />
+  </component>
+  <component name="com.github.evgenys91.machinet.common.dslhistory.DslHistoryState">
+    <option name="historyDtoById">
+      <map>
+        <entry key="07ea3b">
+          <value>
+            <ChatHistoryModel>
+              <option name="contextFilesPaths">
+                <list>
+                  <option value="$PROJECT_DIR$/MathGame.py" />
+                </list>
+              </option>
+              <option name="id" value="07ea3b" />
+              <option name="initiateTms" value="1701195021173" />
+              <option name="request" value="why am i gettin this error C:\Users\uzair\PycharmProjects\pythonProject\venv\Scripts\python.exe C:\Users\uzair\Documents\GitHub\CSE-120-Final-Project-Math-Game\MathGame.py &#10;  File &quot;C:\Users\uzair\Documents\GitHub\CSE-120-Final-Project-Math-Game\MathGame.py&quot;, line 75&#10;    correct_answer = str(eval(self.questions[self.current_question_index]))&#10;    ^&#10;IndentationError: expected an indented block after 'if' statement on line 73&#10;&#10;Process finished with exit code 1" />
+              <option name="response" value="" />
+              <option name="responseDescription" value="The error message indicates that there is an indentation error in your code. In Python, indentation is crucial for defining the structure and scope of code blocks. It seems that the line of code starting with `correct_answer = str(eval(self.questions[self.current_question_index]))` is not properly indented after the `if` statement on line 73.&#10;&#10;To fix this error, you need to make sure that the line of code is indented correctly within the `if` block. Here's the corrected code:&#10;&#10;```python&#10;def check_answer(self):&#10;    user_answer = self.answer_text_ctrl.GetValue()&#10;&#10;    correct_answer = eval(self.questions[self.current_question_index])&#10;    if str(correct_answer) == user_answer:  # Compare as floats&#10;        self.correct_answers += 1&#10;&#10;    self.show_score()&#10;```&#10;&#10;Make sure that the line `self.show_score()` is indented at the same level as the `if` statement. This will resolve the indentation error and ensure that the code executes correctly." />
+              <option name="responseFileName" value="" />
+              <option name="responseFilePath" value="" />
+              <option name="responseTms" value="1701195026112" />
+              <option name="usedLocalFilePaths">
+                <list>
+                  <option value="$PROJECT_DIR$/MathGame.py" />
+                </list>
+              </option>
+            </ChatHistoryModel>
+          </value>
+        </entry>
+        <entry key="2bc62a">
+          <value>
+            <ChatHistoryModel>
+              <option name="contextFilesPaths">
+                <list>
+                  <option value="$PROJECT_DIR$/MathGame.py" />
+                </list>
+              </option>
+              <option name="id" value="2bc62a" />
+              <option name="initiateTms" value="1701195244337" />
+              <option name="request" value="in the code: import wx&#10;import random&#10;import operator&#10;&#10;class MathGame(wx.Frame):&#10;    def __init__(self, parent):&#10;        super().__init__(parent, title=&quot;Math Game&quot;, size=(300, 400))&#10;        self.panel = wx.Panel(self)&#10;        self.title_label = wx.StaticText(self.panel, label=&quot;Math Game&quot;, pos=(100, 20))&#10;        self.title_label.SetFont(wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))&#10;        self.start_button = wx.Button(self.panel, label=&quot;START&quot;, pos=(100, 60), size=(100, 40))&#10;        self.start_button.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))&#10;        self.start_button.Bind(wx.EVT_BUTTON, self.on_start_button_clicked)&#10;        self.question_label = wx.StaticText(self.panel, label=&quot;&quot;, pos=(100, 120))&#10;        self.question_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))&#10;        self.answer_text_ctrl = wx.TextCtrl(self.panel, pos=(100, 150), size=(100, 20), style=wx.TE_PROCESS_ENTER)&#10;        self.answer_text_ctrl.Bind(wx.EVT_TEXT_ENTER, self.on_answer_enter)&#10;        self.next_button = wx.Button(self.panel, label=&quot;Next&quot;, pos=(100, 180), size=(100, 30))&#10;        self.next_button.Bind(wx.EVT_BUTTON, self.on_next_button_clicked)&#10;        self.next_button.Disable()&#10;        self.restart_button = wx.Button(self.panel, label=&quot;Restart&quot;, pos=(100, 180), size=(100, 30))&#10;        self.restart_button.Bind(wx.EVT_BUTTON, self.on_restart_button_clicked)&#10;        self.restart_button.Hide()&#10;        self.questions = []&#10;        self.answers = []&#10;        self.current_question_index = 0&#10;        self.correct_answers = 0&#10;        self.generate_questions()&#10;        self.show_question()&#10;&#10;    def generate_questions(self):&#10;        operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}&#10;        for _ in range(10):&#10;            num1 = random.randint(1, 10)&#10;            num2 = random.randint(1, 10)&#10;            operator_symbol = random.choice(list(operators.keys()))&#10;            question = f&quot;{num1} {operator_symbol} {num2}&quot;&#10;            answer = operators[operator_symbol](num1, num2)&#10;            self.questions.append(question)&#10;            self.answers.append(answer)&#10;&#10;    def show_question(self):&#10;        self.question_label.SetLabel(self.questions[self.current_question_index])&#10;        self.answer_text_ctrl.SetValue(&quot;&quot;)&#10;        self.answer_text_ctrl.SetFocus()&#10;&#10;    def on_start_button_clicked(self, event):&#10;        self.start_button.Hide()&#10;        self.next_button.Enable()&#10;        self.show_question()&#10;&#10;    def on_answer_enter(self, event):&#10;        self.check_answer()&#10;&#10;    def on_next_button_clicked(self, event):&#10;        self.current_question_index += 1&#10;        if self.current_question_index &lt; len(self.questions):&#10;            self.show_question()&#10;        else:&#10;            self.show_score()&#10;&#10;    def on_restart_button_clicked(self, event):&#10;        self.current_question_index = 0&#10;        self.correct_answers = 0&#10;        self.generate_questions()&#10;        self.show_question()&#10;        self.restart_button.Hide()&#10;&#10;    def check_answer(self):&#10;        user_answer = self.answer_text_ctrl.GetValue()&#10;&#10;        correct_answer = eval(self.questions[self.current_question_index])&#10;        if str(correct_answer) == user_answer:  # Compare as floats&#10;&#10;        correct_answer = str(eval(self.questions[self.current_question_index]))&#10;        if str(correct_answer) == user_answer:&#10;            self.correct_answers += 1&#10;&#10;        self.show_score()&#10;&#10;    def show_score(self):&#10;&#10;        total_questions = len(self.questions)&#10;        score = self.correct_answers / len(self.questions) * 10&#10;        self.question_label.SetLabel(f&quot;Your score: {score}/10%&quot;)&#10;&#10;        score = self.correct_answers / len(self.questions) * 100&#10;        self.question_label.SetLabel(f&quot;Your score: {score:.2f}/100&quot;)&#10;        self.next_button.Disable()&#10;        self.restart_button.Show()&#10;&#10;&#10;if __name__ == &quot;__main__&quot;:&#10;    app = wx.App()&#10;    frame = MathGame(None)&#10;    frame.Show()&#10;    app.MainLoop() why am i getting error: C:\Users\uzair\PycharmProjects\pythonProject\venv\Scripts\python.exe C:\Users\uzair\Documents\GitHub\CSE-120-Final-Project-Math-Game\MathGame.py &#10;  File &quot;C:\Users\uzair\Documents\GitHub\CSE-120-Final-Project-Math-Game\MathGame.py&quot;, line 75&#10;    correct_answer = str(eval(self.questions[self.current_question_index]))&#10;    ^&#10;IndentationError: expected an indented block after 'if' statement on line 73&#10;&#10;Process finished with exit code 1" />
+              <option name="response" value="" />
+              <option name="responseDescription" value="The error you're encountering is due to incorrect indentation in your code. In Python, indentation is crucial for defining the structure and scope of code blocks. &#10;&#10;In your code, the line `correct_answer = str(eval(self.questions[self.current_question_index]))` is not properly indented after the `if` statement on line 73. It should be indented to be part of the `if` block. &#10;&#10;Here's the corrected code:&#10;&#10;```python&#10;def check_answer(self):&#10;    user_answer = self.answer_text_ctrl.GetValue()&#10;&#10;    correct_answer = eval(self.questions[self.current_question_index])&#10;    if str(correct_answer) == user_answer:  # Compare as floats&#10;        self.correct_answers += 1&#10;&#10;    self.show_score()&#10;```&#10;&#10;Make sure that the line `self.show_score()` is indented at the same level as the `if` statement. This will resolve the indentation error and ensure that the code executes correctly." />
+              <option name="responseFileName" value="" />
+              <option name="responseFilePath" value="" />
+              <option name="responseTms" value="1701195248306" />
+              <option name="usedLocalFilePaths">
+                <list>
+                  <option value="$PROJECT_DIR$/MathGame.py" />
+                </list>
+              </option>
+            </ChatHistoryModel>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
