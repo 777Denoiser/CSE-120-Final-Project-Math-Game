@@ -21,10 +21,14 @@ class MathGame(wx.Frame):
         self.restart_button = wx.Button(self.panel, label="Restart", pos=(100, 180), size=(100, 30))
         self.restart_button.Bind(wx.EVT_BUTTON, self.on_restart_button_clicked)
         self.restart_button.Hide()
+        self.leaderboard_button = wx.Button(self.panel, label="Leaderboard", pos=(100, 220), size=(100, 30))
+        self.leaderboard_button.Bind(wx.EVT_BUTTON, self.show_leaderboard)
+        self.leaderboard_button.Disable()
         self.questions = []
         self.answers = []
         self.current_question_index = 0
         self.correct_answers = 0
+        self.high_scores = self.load_high_scores()
         self.generate_questions()
         self.show_question()
 
@@ -47,6 +51,7 @@ class MathGame(wx.Frame):
     def on_start_button_clicked(self, event):
         self.start_button.Hide()
         self.next_button.Enable()
+        self.leaderboard_button.Enable()
         self.show_question()
 
     def on_answer_enter(self, event):
@@ -76,16 +81,35 @@ class MathGame(wx.Frame):
         self.show_score()
 
     def show_score(self):
-
         total_questions = len(self.questions)
-        score = self.correct_answers / len(self.questions) * 10
-        self.question_label.SetLabel(f"Your score: {score}/10%")
-
-        score = self.correct_answers / len(self.questions) * 100
-        self.question_label.SetLabel(f"Your score: {score:.2f}/100")
+        score_percentage = (self.correct_answers / total_questions) * 100
+        self.question_label.SetLabel(f"Your score: {score_percentage:.2f}%")
         self.next_button.Disable()
         self.restart_button.Show()
+        self.update_high_scores(score_percentage)
 
+    def load_high_scores(self):
+        try:
+            with open("high_scores.txt", "r") as file:
+                high_scores = [float(line.strip()) for line in file.readlines()]
+        except FileNotFoundError:
+            high_scores = []
+        return high_scores
+
+    def save_high_scores(self):
+        with open("high_scores.txt", "w") as file:
+            for score in self.high_scores:
+                file.write(f"{score}\n")
+
+    def update_high_scores(self, score):
+        self.high_scores.append(score)
+        self.high_scores.sort(reverse=True)
+        self.high_scores = self.high_scores[:5]  # Keep only the top 5 scores
+        self.save_high_scores()
+
+    def show_leaderboard(self, event):
+        leaderboard_str = "\n".join([f"{i + 1}. {score:.2f}%" for i, score in enumerate(self.high_scores)])
+        wx.MessageBox(f"Leaderboard:\n{leaderboard_str}", "High Scores", wx.OK | wx.ICON_INFORMATION)
 
 if __name__ == "__main__":
     app = wx.App()
