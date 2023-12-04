@@ -6,9 +6,15 @@ import time
 class MathGame(wx.Frame):
     def __init__(self, parent):
         super().__init__(parent, title="Math Game", size=(300, 400))
+        self.SetBackgroundColour(wx.Colour(0, 0, 0))
+
         self.panel = wx.Panel(self)
+        self.panel.SetBackgroundColour(wx.Colour(0, 0, 0))  # Set panel background to black
+
+    
         self.title_label = wx.StaticText(self.panel, label="Math Game", pos=(100, 20))
         self.title_label.SetFont(wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
+        self.title_label.SetForegroundColour(wx.Colour(255, 255, 0))  # White text
 
         self.start_button = wx.Button(self.panel, label="START", pos=(100, 60), size=(100, 40))
         self.start_button.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
@@ -24,7 +30,14 @@ class MathGame(wx.Frame):
 
         self.player_1_score = 0
         self.player_2_score = 0
+
+        self.player_turn_label = wx.StaticText(self.panel, label="", pos=(50, 50))
+        self.player_turn_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
+        self.player_turn_label.SetForegroundColour(wx.Colour(255, 255, 255))  # White text
         
+        self.question_label = wx.StaticText(self.panel, label="", pos=(50, 80))
+        self.question_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.question_label.SetForegroundColour(wx.Colour(255, 255, 255))  # White text
 
     
 
@@ -40,13 +53,19 @@ class MathGame(wx.Frame):
 
         self.countdown_label = wx.StaticText(self.panel, label="", pos=(140, 60))
         self.countdown_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.countdown_label.SetForegroundColour(wx.Colour(255, 255, 255))
         self.countdown_label.Hide()
 
         self.question_label = wx.StaticText(self.panel, label="", pos=(100, 120))
         self.question_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        self.question_label.SetForegroundColour(wx.Colour(255, 255, 255))  # White text
+
 
         self.answer_text_ctrl = wx.TextCtrl(self.panel, pos=(100, 150), size=(100, 20), style=wx.TE_PROCESS_ENTER)
         self.answer_text_ctrl.Bind(wx.EVT_TEXT_ENTER, self.on_answer_enter)
+        self.answer_text_ctrl.SetBackgroundColour(wx.Colour(0, 0, 0))  # Black background
+        self.answer_text_ctrl.SetForegroundColour(wx.Colour(255, 255, 255))  # White text
+        self.answer_text_ctrl.Hide()
 
         self.next_button = wx.Button(self.panel, label="Next", pos=(100, 180), size=(100, 30))
         self.next_button.Bind(wx.EVT_BUTTON, self.on_next_button_clicked)
@@ -97,30 +116,42 @@ class MathGame(wx.Frame):
              self.question_label.SetLabel(f"{player_text}: {self.questions[self.current_question_index]}")
         else:
              self.question_label.SetLabel(self.questions[self.current_question_index])
+             self.question_label.CenterOnParent(wx.HORIZONTAL)
         self.answer_text_ctrl.SetValue("")
         self.answer_text_ctrl.SetFocus()
+        self.Refresh()
+        self.Update()
 
+      
     def on_single_player_button_clicked(self, event):
         self.single_player_button.Hide()
         self.pvp_button.Hide()
         self.casual_button.Show()
         self.timed_button.Show()
+        self.answer_text_ctrl.Hide()
 
     def on_pvp_button_clicked(self, event):
         self.single_player_button.Hide()
         self.pvp_button.Hide()
         self.casual_button.Show()
         self.timed_button.Show()
+        self.answer_text_ctrl.Hide()
+        self.pvp_mode = True
+        self.player_1_turn = True
+        self.generate_questions()
+        self.show_question()
 
     def on_start_button_clicked(self, event):
         self.start_button.Hide()
         self.single_player_button.Show()
         self.pvp_button.Show()
+        self.answer_text_ctrl.Hide()
 
     def on_casual_button_clicked(self, event):
         self.casual_button.Hide()
         self.timed_button.Hide()
         self.next_button.Show()
+        self.answer_text_ctrl.Show()
         self.leaderboard_button.Disable()
         self.timed_leaderboard_button.Disable()
         self.show_question()
@@ -130,6 +161,7 @@ class MathGame(wx.Frame):
         self.casual_button.Hide()
         self.timed_button.Hide()
         self.timed_next_button.Show()
+        self.answer_text_ctrl.Show()
         self.leaderboard_button.Disable()
         self.timed_leaderboard_button.Disable()
         self.countdown_label.Show()
@@ -137,25 +169,31 @@ class MathGame(wx.Frame):
 
         start_time = time.time()
         self.timer.Start(1000)
+        self.start_game()
         self.show_question()
 
     def on_next_button_clicked(self, event):
-        if not self.pvp_mode:
+        if  self.pvp_mode:
+            self.check_answer_pvp()
+            self.current_question_index += 1
+            if self.current_question_index < len(self.questions):
+                self.player_1_turn = not self.player_1_turn
+                print("Player 1's turn" if self.player_1_turn else "Player 2's turn")
+                self.show_question()
+            else:
+                self.show_pvp_score()
+
+                
+        else:
             self.check_answer()
             self.current_question_index += 1
             if self.current_question_index < len(self.questions):
                 self.show_question()
             else:
                 self.show_score()
-        else:
-            if self.player_1_turn:
-                self.check_answer_pvp()
-            self.current_question_index += 1
-            self.player_1_turn = not self.player_1_turn
-        if self.current_question_index < len(self.questions):
-            self.show_question()
-        else:
-            self.show_score()
+
+        
+            
 
     def check_answer(self):
         user_answer = self.answer_text_ctrl.GetValue()
@@ -165,19 +203,44 @@ class MathGame(wx.Frame):
 
     def check_answer_pvp(self):
         user_answer = self.answer_text_ctrl.GetValue()
-        correct_answer = eval(self.questions[self.current_question_index])
+        question_parts = self.questions[self.current_question_index].split()
+        num1, operator, num2 = int(question_parts[0]), question_parts[1], int(question_parts[2])
+
+        if operator == '+':
+            correct_answer = num1 + num2
+        elif operator == '-':
+            correct_answer = num1 - num2
+        elif operator == '*':
+            correct_answer = num1 * num2
+        elif operator == '/':
+            correct_answer = num1 / num2
+
         if str(correct_answer) == user_answer:
-            if self.player_1_turn:
-                self.player_1_score += 1
-            else:
-                self.player_2_score += 1
+           if self.player_1_turn:
+            self.player_1_score += 1
+           else:
+            self.player_2_score += 1
+
 
         
 
     def show_pvp_score(self):
        result = f"Player 1's score: {self.player_1_score}\nPlayer 2's score: {self.player_2_score}"
        wx.MessageBox(result, "PvP Game Over", wx.OK | wx.ICON_INFORMATION)
-       self.restart_game()  # Or any other logic to reset or end the game
+       self.restart_game()  
+
+    def restart_game(self):
+        self.current_question_index = 0
+        self.player_1_score = 0
+        self.player_2_score = 0
+        self.player_1_turn = True  
+        self.questions = []  
+        self.answers = []    
+        self.generate_questions() 
+        self.start_button.Hide()
+        self.restart_button.Show()   
+        self.Refresh()
+        self.Update()
 
 
 
@@ -202,11 +265,7 @@ class MathGame(wx.Frame):
 
     
     def on_restart_button_clicked(self, event):
-        self.current_question_index = 0
-        self.correct_answers = 0
-        self.questions = []
-        self.answers = []
-        self.generate_questions()
+        self.restart_game()
         self.restart_button.Hide()
         self.start_button.Show()
 
