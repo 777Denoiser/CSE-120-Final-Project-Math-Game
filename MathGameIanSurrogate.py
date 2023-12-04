@@ -13,7 +13,7 @@ class MathGame(wx.Frame):
         self.title_label.SetFont(wx.Font(16, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, underline=True))##IIIIIIII
         self.title_color = wx.Colour(255, 255, 0)  ##IIIIIIII color code for yellow
         self.title_label.SetForegroundColour(self.title_color)##IIIIIIIII
-        #self.button_format = wx.BORDER_SUNKEN | wx.ALIGN_CENTER | wx.ST_NO_AUTORESIZE##IIIIIIII makes grey border for button
+        self.button_format = wx.BORDER_SUNKEN | wx.ALIGN_CENTER | wx.ST_NO_AUTORESIZE##IIIIIIII #makes grey border for button
         self.button_color = wx.Colour(0,0,0)
         self.start_button = wx.Button(self.panel, label="START", pos=(100, 60), size=(100, 40))##IIIIIIIIIII
         self.start_button.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD))
@@ -30,9 +30,10 @@ class MathGame(wx.Frame):
         self.countdown_label = wx.StaticText(self.panel, label="", pos= (140, 60))
         self.countdown_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
         self.countdown_label.Hide()
-        self.question_label = wx.StaticText(self.panel, label="", pos=(100, 120))
+        self.question_label = wx.StaticText(self.panel, label="", style=wx.ALIGN_CENTER)
+        self.question_label.SetForegroundColour(wx.Colour(255, 255, 255))  # makes questions white
         self.question_label.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
-        self.answer_text_ctrl = wx.TextCtrl(self.panel, pos=(100, 150), size=(100, 20), style=wx.TE_PROCESS_ENTER)
+        self.answer_text_ctrl = wx.TextCtrl(self.panel, style=wx.ALIGN_CENTER, size=(100, 20), style=wx.TE_PROCESS_ENTER)
         self.answer_text_ctrl.SetForegroundColour(wx.Colour(255, 255, 255))##IIIIIIII makes text white
         self.answer_text_ctrl.Bind(wx.EVT_TEXT_ENTER, self.on_answer_enter)
         self.next_button = wx.Button(self.panel, label="Next", pos=(100, 180), size=(100, 30))
