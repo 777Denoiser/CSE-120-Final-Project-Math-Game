@@ -1,2 +1,1 @@
-timed_leaderboard_str = "\n".join([f"{i + 1}. {score:.2f}" for i, score in enumerate(self.timed_high_scores)])##
-        wx.MessageBox(f"Timed Leaderboard:\n{timed_leaderboard_str}", "High Scores", wx.OK | wx.ICON_INFORMATION)##
+def on_timed
