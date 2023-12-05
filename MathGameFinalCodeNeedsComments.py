@@ -141,6 +141,8 @@ class MathGame(wx.Frame):
             self.timed_questions.append(question)
             self.timed_answers.append(answer)
 
+# this definition generates 20 random math questions for a player versus player game mode and uses random mode to to select a number between 1-10
+    # the questions are answers and stored in a separate list
     def generate_pvp_questions(self):
         operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
         for _ in range(20):
@@ -152,16 +154,21 @@ class MathGame(wx.Frame):
             self.pvp_questions.append(question)
             self.pvp_answers.append(answer)
 
+    # begin the definitions updates the labels of the questions and clearing the values,
+    # keeps track of the current questions index
     def show_question(self):
         self.question_label.SetLabel(self.questions[self.current_question_index])
         self.answer_text_ctrl.SetValue("")
         self.answer_text_ctrl.SetFocus()
 
+    # this definition does the same as the one above but for the timed mode
     def show_timed_question(self):
         self.question_label.SetLabel(self.timed_questions[self.current_question_index])
         self.answer_text_ctrl.SetValue("")
         self.answer_text_ctrl.SetFocus()
 
+# this definition makes questions index zero and hides the player turn label
+    #this definition also sets color to red and blue for two players having them take turns
     def show_pvp_question(self):
         if self.current_question_index == 0:
             self.player_turn_label.Show()
@@ -175,12 +182,15 @@ class MathGame(wx.Frame):
         self.answer_text_ctrl.SetValue("")
         self.answer_text_ctrl.SetFocus()
 
+# this calls the on_single_player_button_clicked and identifies the two buttons
     def on_single_player_button_clicked(self, event):
         self.single_player_button.Hide()
         self.pvp_button.Hide()
         self.casual_button.Show()
         self.timed_button.Show()
 
+# this triggers when a button is clicked it sets global variables and hides the elements so the player vs player can start
+    # also sets the values live_game to 1 and gamemode to 3
     def on_pvp_button_clicked(self, event):
         global live_game
         global gamemode
@@ -197,11 +207,14 @@ class MathGame(wx.Frame):
         self.show_pvp_question()
         live_game = 1
 
+#the definition below executes when the starting button is clicked inside of the function and shows two other buttons
     def on_start_button_clicked(self, event):
         self.start_button.Hide()
         self.single_player_button.Show()
         self.pvp_button.Show()
 
+# this is triggered when the button is clicked and it hides and shows certain buttons in the UI
+    # self the global variable to 1 and sets gamemode to 1
     def on_casual_button_clicked(self, event):
         global live_game
         global gamemode
@@ -218,6 +231,8 @@ class MathGame(wx.Frame):
         self.show_question()
         live_game = 1
 
+#this is triggered when the button is clicked and initializes the global variables and sets game mode to 2
+    # this also hides and shows certain buttons
     def on_timed_button_clicked(self, event):
         global live_game
         global gamemode
@@ -239,6 +254,7 @@ class MathGame(wx.Frame):
         self.show_timed_question()
         live_game = 1
 
+    # this definition is responsible for updating the countdown and calculates the elapsed time until the reset 60 seconds
     def timer_check(self, event):
         global live_game
         global stopwatch
