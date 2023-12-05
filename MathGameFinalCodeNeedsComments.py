@@ -4,6 +4,11 @@ import operator
 import time
 
 
+# above we imported all of the necessary libraries and modules for the game
+
+# below we create the main class of the main game which initializes the UI interface for the math game
+# we initialize the labels and create the window, buttons and text controls for the game
+# we also initialize variables and load higher scores and set up a timer for the game
 
 class MathGame(wx.Frame):
     def __init__(self, parent):
@@ -109,8 +114,10 @@ class MathGame(wx.Frame):
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.timer_check, self.timer)
 
-
-
+    # below we generate 10 random arithmetics questions that can be increased by decreased
+    # in the definition below it randomly selects answers operators symbols from the dictonary,
+    # and generates the random numbers
+    # the questions are answers and stored in a separate list
     def generate_questions(self):
         operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
         for _ in range(10):
@@ -122,6 +129,7 @@ class MathGame(wx.Frame):
             self.questions.append(question)
             self.answers.append(answer)
 
+    # below this definition generates a list of 300 timed math questions. given a limited time to solve and many as you can
     def generate_timed_questions(self):
         operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
         for _ in range(300):
